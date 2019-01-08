@@ -1,0 +1,32 @@
+<?xml version="1.0"  encoding="utf-8" ?>
+<jobs>
+	<job>
+		<name>
+			XmlConfigWatcherJob
+		</name>
+		<clazz>
+            com.zhuang.quartz.job.XmlConfigWatcherJob
+        </clazz>
+		<interval>
+			2
+		</interval>
+	</job>
+	 
+	<job>
+		<name>
+			TestJob
+		</name>
+		<clazz>
+            com.zhuang.quartz.job.TestJob
+        </clazz>
+		<cron>
+			0/1 * * * * ?
+		</cron>
+		<interval>
+			1
+		</interval>
+		<data>
+			1
+		</data>
+	</job>
+</jobs>

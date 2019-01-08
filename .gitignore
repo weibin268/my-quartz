@@ -1,0 +1,7 @@
+/target/
+/logs/
+/lockfile
+/packing/logs/
+/packing/lockfile
+/*.iml
+/.idea/
