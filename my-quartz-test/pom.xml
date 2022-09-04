@@ -11,7 +11,7 @@
 
     <groupId>com.github.weibin268</groupId>
     <artifactId>my-quartz-test</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.0-SNAPSHOT</version>
 
     <properties>
         <java.version>1.8</java.version>
