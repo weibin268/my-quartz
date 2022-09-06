@@ -54,10 +54,19 @@ public class JobController {
     }
 
     @GetMapping("pauseJob")
-    public ApiResult<String> papauseJobuse(@RequestParam("jobName") String jobName) throws SchedulerException {
+    public ApiResult<String> pauseJob(@RequestParam("jobName") String jobName) throws SchedulerException {
         JobKey jobKey = new JobKey(jobName);
         if (scheduler.checkExists(jobKey)) {
             scheduler.pauseJob(jobKey);
+        }
+        return ApiResult.success("ok");
+    }
+
+    @GetMapping("resumeJob")
+    public ApiResult<String> resumeJob(@RequestParam("jobName") String jobName) throws SchedulerException {
+        JobKey jobKey = new JobKey(jobName);
+        if (scheduler.checkExists(jobKey)) {
+            scheduler.resumeJob(jobKey);
         }
         return ApiResult.success("ok");
     }
