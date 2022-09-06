@@ -25,8 +25,10 @@ public class JobController {
         Class<? extends Job> jobClazz = null;
         try {
             Class<?> tempJobClazz = Class.forName(jobClass);
-            if (tempJobClazz.isAssignableFrom(Job.class)) {
+            if (Job.class.isAssignableFrom(tempJobClazz)) {
                 jobClazz = (Class<? extends Job>) tempJobClazz;
+            } else {
+                ApiResult.error("不是job类！");
             }
         } catch (ClassNotFoundException e) {
             ApiResult.error("类不存在！");
@@ -43,20 +45,20 @@ public class JobController {
     }
 
     @GetMapping("deleteJob")
-    public String deleteJob(@RequestParam("jobName") String jobName) throws SchedulerException {
+    public ApiResult<String> deleteJob(@RequestParam("jobName") String jobName) throws SchedulerException {
         JobKey jobKey = new JobKey(jobName);
         if (scheduler.checkExists(jobKey)) {
             scheduler.deleteJob(jobKey);
         }
-        return "ok";
+        return ApiResult.success("ok");
     }
 
     @GetMapping("pauseJob")
-    public String papauseJobuse(@RequestParam("jobName") String jobName) throws SchedulerException {
+    public ApiResult<String> papauseJobuse(@RequestParam("jobName") String jobName) throws SchedulerException {
         JobKey jobKey = new JobKey(jobName);
         if (scheduler.checkExists(jobKey)) {
             scheduler.pauseJob(jobKey);
         }
-        return "ok";
+        return ApiResult.success("ok");
     }
 }
