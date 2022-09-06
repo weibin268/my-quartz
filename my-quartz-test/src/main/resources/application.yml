@@ -1,15 +1,21 @@
-# server
 server:
-  port: 8088
+  port: 8888
 # spring
 spring:
   datasource:
-    driverClassName: com.mysql.jdbc.Driver
+    driver-class-name: com.mysql.jdbc.Driver
     url: jdbc:mysql://127.0.0.1:3306/upms?useSSL=false&useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true
     username: root
     password: 123456
-# logging
+  quartz:
+    job-store-type: jdbc
+    jdbc:
+      initialize-schema: never
+    properties:
+      # 启用集群
+      org.quartz.jobStore.isClustered: true
+      # 调度器实例名（默认：quartzScheduler）
+      #org.quartz.scheduler.instanceName: myQuartzScheduler
 logging:
   level:
-    org.springframework.jdbc.datasource.DataSourceTransactionManager: debug
-    org.springframework.jdbc.datasource.DataSourceUtils: debug
+    com.zhuang.quartz: debug

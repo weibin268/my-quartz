@@ -59,6 +59,12 @@
             <version>1.18.12</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>com.github.weibin268</groupId>
+            <artifactId>my-quartz</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+
     </dependencies>
 
     <build>
