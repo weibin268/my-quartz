@@ -27,7 +27,13 @@ public class JobController {
     public ApiResult<String> createJob(@RequestParam(value = "jobGroup", required = false) String jobGroup,
                                        @RequestParam("jobName") String jobName,
                                        @RequestParam("jobClass") String jobClass,
-                                       @RequestParam("cron") String cron) throws SchedulerException {
+                                       @RequestParam(value = "cron", required = false) String cron,
+                                       @RequestParam(value = "intervalSeconds", required = false) Integer intervalSeconds
+    ) throws SchedulerException {
+
+        if (cron == null && intervalSeconds == null) {
+            ApiResult.error("参数cron和intervalSeconds不能同时为空！");
+        }
         JobKey jobKey = new JobKey(jobName, jobGroup);
         if (scheduler.checkExists(jobKey)) {
             ApiResult.error("job已存在！");
@@ -46,10 +52,15 @@ public class JobController {
         JobDetail jobDetail = JobBuilder.newJob(jobClazz)
                 .withIdentity(jobKey)
                 .build();
-        CronScheduleBuilder cronScheduleBuilder = CronScheduleBuilder.cronSchedule(cron);
+        ScheduleBuilder scheduleBuilder = null;
+        if (intervalSeconds != null) {
+            scheduleBuilder = SimpleScheduleBuilder.repeatSecondlyForever(intervalSeconds);
+        } else {
+            scheduleBuilder = CronScheduleBuilder.cronSchedule(cron);
+        }
         Trigger trigger = TriggerBuilder.newTrigger()
                 .withIdentity(jobName + "Trigger", jobKey.getGroup())
-                .withSchedule(cronScheduleBuilder).build();
+                .withSchedule(scheduleBuilder).build();
         scheduler.scheduleJob(jobDetail, trigger);
         return ApiResult.success("ok!");
     }
