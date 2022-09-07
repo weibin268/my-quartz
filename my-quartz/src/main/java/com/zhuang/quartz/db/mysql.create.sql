@@ -1,20 +1,14 @@
-DROP TABLE IF EXISTS sys_fileupload;
-CREATE TABLE sys_fileupload
+DROP TABLE IF EXISTS sys_job_log;
+CREATE TABLE sys_job_log
 (
     id          VARCHAR(50) PRIMARY KEY,
-    biz_table   VARCHAR(50),
-    biz_field   VARCHAR(30),
-    biz_id      VARCHAR(36),
-    file_path   VARCHAR(1000) NOT NULL,
-    file_name   VARCHAR(500),
-    file_size   int,
-    status      INT,
+    job_name    VARCHAR(100),
+    job_class   VARCHAR(500),
+    result      INT,
+    message     VARCHAR(2000),
     create_time DATETIME,
-    modify_time DATETIME,
-    create_by   VARCHAR(50),
-    modify_by   VARCHAR(50)
+    create_by   VARCHAR(50)
 );
-ALTER TABLE sys_fileupload
-    COMMENT = '文件上传记录表';
-ALTER TABLE sys_fileupload
-    ADD INDEX IDX_created_time (create_time);
+ALTER TABLE sys_job_log
+    COMMENT = '定时任务执行记录表';
+
