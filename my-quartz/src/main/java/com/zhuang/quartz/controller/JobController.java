@@ -30,7 +30,7 @@ public class JobController {
                                        @RequestParam("cron") String cron) throws SchedulerException {
         JobKey jobKey = new JobKey(jobName, jobGroup);
         if (scheduler.checkExists(jobKey)) {
-            scheduler.deleteJob(jobKey);
+            ApiResult.error("job已存在！");
         }
         Class<? extends Job> jobClazz = null;
         try {
@@ -58,9 +58,8 @@ public class JobController {
     public ApiResult<String> deleteJob(@RequestParam(value = "jobGroup", required = false) String jobGroup,
                                        @RequestParam("jobName") String jobName) throws SchedulerException {
         JobKey jobKey = new JobKey(jobName, jobGroup);
-        if (scheduler.checkExists(jobKey)) {
-            scheduler.deleteJob(jobKey);
-        }
+        checkJobExists(jobKey);
+        scheduler.deleteJob(jobKey);
         return ApiResult.success("ok");
     }
 
@@ -68,9 +67,8 @@ public class JobController {
     public ApiResult<String> pauseJob(@RequestParam(value = "jobGroup", required = false) String jobGroup,
                                       @RequestParam("jobName") String jobName) throws SchedulerException {
         JobKey jobKey = new JobKey(jobName, jobGroup);
-        if (scheduler.checkExists(jobKey)) {
-            scheduler.pauseJob(jobKey);
-        }
+        checkJobExists(jobKey);
+        scheduler.pauseJob(jobKey);
         return ApiResult.success("ok");
     }
 
@@ -78,9 +76,8 @@ public class JobController {
     public ApiResult<String> resumeJob(@RequestParam(value = "jobGroup", required = false) String jobGroup,
                                        @RequestParam("jobName") String jobName) throws SchedulerException {
         JobKey jobKey = new JobKey(jobName, jobGroup);
-        if (scheduler.checkExists(jobKey)) {
-            scheduler.resumeJob(jobKey);
-        }
+        checkJobExists(jobKey);
+        scheduler.resumeJob(jobKey);
         return ApiResult.success("ok");
     }
 
@@ -88,6 +85,16 @@ public class JobController {
     public ApiResult<List<JobVo>> getJobList() {
         List<JobVo> jobVoList = new ArrayList<>();
         return ApiResult.success(jobVoList);
+    }
+
+    private void checkJobExists(JobKey jobKey) {
+        try {
+            if (!scheduler.checkExists(jobKey)) {
+                throw new RuntimeException("job不存在！");
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }
