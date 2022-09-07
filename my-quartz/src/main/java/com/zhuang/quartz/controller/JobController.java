@@ -48,7 +48,7 @@ public class JobController {
                 .build();
         CronScheduleBuilder cronScheduleBuilder = CronScheduleBuilder.cronSchedule(cron);
         Trigger trigger = TriggerBuilder.newTrigger()
-                .withIdentity(jobName + "Trigger")
+                .withIdentity(jobName + "Trigger", jobKey.getGroup())
                 .withSchedule(cronScheduleBuilder).build();
         scheduler.scheduleJob(jobDetail, trigger);
         return ApiResult.success("ok!");
