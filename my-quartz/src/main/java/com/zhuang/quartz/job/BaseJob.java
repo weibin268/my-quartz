@@ -1,6 +1,8 @@
 package com.zhuang.quartz.job;
 
+import com.zhuang.quartz.config.MyQuartzProperties;
 import com.zhuang.quartz.entity.SysJobLog;
+import com.zhuang.quartz.enums.ExecResult;
 import com.zhuang.quartz.service.SysJobLogService;
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.JobExecutionContext;
@@ -14,22 +16,29 @@ public abstract class BaseJob extends QuartzJobBean {
 
     @Autowired
     private SysJobLogService sysJobLogService;
+    @Autowired
+    private MyQuartzProperties myQuartzProperties;
 
     @Override
     protected void executeInternal(JobExecutionContext jobExecutionContext) throws JobExecutionException {
         log.debug("exec job begin -> {}", jobExecutionContext.getJobDetail().getKey());
         SysJobLog sysJobLog = new SysJobLog();
-        sysJobLog.setJobClass(jobExecutionContext.getJobDetail().getJobClass().getName());
+        sysJobLog.setJobGroup(jobExecutionContext.getJobDetail().getKey().getGroup());
         sysJobLog.setJobName(jobExecutionContext.getJobDetail().getKey().getName());
+        sysJobLog.setJobClass(jobExecutionContext.getJobDetail().getJobClass().getName());
         try {
             exec(jobExecutionContext);
-            sysJobLog.setResult(0);
+            sysJobLog.setResult(ExecResult.SUCCESS.getValue());
         } catch (Exception e) {
             log.error("job exec fail!", e);
-            sysJobLog.setResult(1);
+            sysJobLog.setResult(ExecResult.ERROR.getValue());
             sysJobLog.setMessage(e.getMessage());
         }
-        sysJobLogService.add(sysJobLog);
+        if (myQuartzProperties.getLog()) {
+            if (!myQuartzProperties.getLogErrorOnly() || !ExecResult.SUCCESS.getValue().equals(sysJobLog.getResult())) {
+                sysJobLogService.add(sysJobLog);
+            }
+        }
         log.debug("exec job end -> {}", jobExecutionContext.getJobDetail().getKey());
     }
 

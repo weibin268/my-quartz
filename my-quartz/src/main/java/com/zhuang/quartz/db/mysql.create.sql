@@ -2,7 +2,8 @@ DROP TABLE IF EXISTS sys_job_log;
 CREATE TABLE sys_job_log
 (
     id          VARCHAR(50) PRIMARY KEY,
-    job_name    VARCHAR(100),
+    job_group   VARCHAR(50),
+    job_name    VARCHAR(50),
     job_class   VARCHAR(500),
     result      INT,
     message     VARCHAR(2000),

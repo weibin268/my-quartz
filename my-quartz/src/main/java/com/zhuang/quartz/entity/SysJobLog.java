@@ -12,6 +12,7 @@ public class SysJobLog {
 
     @TableId
     private String id;
+    private String jobGroup;
     private String jobName;
     private String jobClass;
     private Integer result;
