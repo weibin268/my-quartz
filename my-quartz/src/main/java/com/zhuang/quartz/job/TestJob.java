@@ -9,5 +9,6 @@ public class TestJob extends BaseJob {
     @Override
     protected void exec(JobExecutionContext context) {
         System.out.println("test-------");
+        throw  new RuntimeException("error");
     }
 }
