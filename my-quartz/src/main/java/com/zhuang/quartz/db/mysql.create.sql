@@ -6,7 +6,7 @@ CREATE TABLE sys_job_log
     job_name    VARCHAR(50),
     job_class   VARCHAR(500),
     result      INT,
-    message     VARCHAR(2000),
+    message     VARCHAR(4000),
     create_time DATETIME,
     create_by   VARCHAR(50)
 );

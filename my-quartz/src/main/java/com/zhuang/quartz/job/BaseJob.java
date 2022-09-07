@@ -33,9 +33,13 @@ public abstract class BaseJob extends QuartzJobBean {
             exec(jobExecutionContext);
             sysJobLog.setResult(ExecResult.SUCCESS.getValue());
         } catch (Exception e) {
+            int maxMessageLength = 2000;
             log.error("job exec fail!", e);
             sysJobLog.setResult(ExecResult.ERROR.getValue());
             String messageStack = ExceptionUtils.getStackTrace(e);
+            if (messageStack.length() > maxMessageLength) {
+                messageStack = messageStack.substring(0, maxMessageLength);
+            }
             sysJobLog.setMessage(messageStack);
         }
         if (myQuartzProperties.getLog()) {
