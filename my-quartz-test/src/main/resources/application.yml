@@ -10,6 +10,7 @@ spring:
   quartz:
     job-store-type: jdbc
     jdbc:
+      # 初始化数据库表
       initialize-schema: never
     properties:
       # 启用集群
