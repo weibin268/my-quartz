@@ -23,9 +23,8 @@ public class SysJobLogService extends ServiceImpl<SysJobMapper, SysJobLog> {
     }
 
     public List<SysJobLog> getListByEndTime(Date endTime) {
-        return list(
-                new LambdaQueryWrapper<SysJobLog>()
-                        .lt(SysJobLog::getCreateTime, endTime)
+        return list(new LambdaQueryWrapper<SysJobLog>()
+                .lt(SysJobLog::getCreateTime, endTime)
         );
     }
 }
