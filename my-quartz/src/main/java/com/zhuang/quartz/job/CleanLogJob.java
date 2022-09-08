@@ -11,6 +11,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+// 每天0点执行一次：0 0 0 * * ?
 public class CleanLogJob extends BaseJob {
 
     @Autowired
